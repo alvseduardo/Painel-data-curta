@@ -1,4 +1,4 @@
-('C:\\Users\\intni\\OneDrive\\Área de Trabalho\\Projeto data '
+('C:\\Users\\intni\\OneDrive\\Área de Trabalho\\Painel data '
  'curta\\build\\main\\PYZ-00.pyz',
  [('IPython',
    'C:\\Users\\intni\\AppData\\Roaming\\Python\\Python313\\site-packages\\IPython\\__init__.py',

@@ -1,4 +1,4 @@
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, date
 import subprocess
 import pandas as pd
 import mysql.connector
@@ -11,8 +11,11 @@ import time
 import subprocess
 import sys
 from dotenv import load_dotenv
+import shutil
+import win32com.client
 
-load_dotenv()
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+load_dotenv(dotenv_path=env_path)
 
 # Configurações do pandas para exibir todas as colunas e largura ajustada
 pd.set_option('display.max_columns', None)
@@ -24,7 +27,7 @@ ontem = (datetime.now() - timedelta(days=1)).date()
 amanha = hj + timedelta(days=1)
 data_mysql_hj = hj.strftime('%Y-%m-%d')
 data_mysql_am = amanha.strftime('%Y-%m-%d')
-
+print (data_mysql_hj)
 data_formatada_hj = hj.strftime('%d/%m/%Y')
 data_formatada_am = amanha.strftime('%d/%m/%Y')
 
@@ -38,7 +41,6 @@ def apagar_arquivo():
     
     if os.path.exists(caminho_arquivo):
         os.remove(caminho_arquivo)
-        print(f"O arquivo {nome_arquivo} foi apagado com sucesso.")
     else:
         print(f"O arquivo {nome_arquivo} não foi encontrado na pasta de downloads.")
 
@@ -48,11 +50,8 @@ def apagar_arquivo2():
     if os.path.exists(caminho_arquivo):
         try:
             os.remove(caminho_arquivo)
-            print(f"Arquivo {caminho_arquivo} apagado com sucesso!")
         except Exception as e:
             print(f"Erro ao apagar o arquivo: {e}")
-    else:
-        print(f"O arquivo {caminho_arquivo} não foi encontrado.")
 
 def atualizar_variaveis(botao_id):
     global caminho, aba, qloja, lojaexcel
@@ -124,6 +123,50 @@ def atualizar_variaveis(botao_id):
         caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_017.xlsx'
         aba = "BD_017_SEGUNDA_ITENS"
         qloja = "SED,017"
+    elif botao_id == "018":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_018.xlsx'
+        aba = "BD_018_SEGUNDA_ITENS"
+        qloja = "SED,018"
+    elif botao_id == "019":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_019.xlsx'
+        aba = "BD_019_SEGUNDA_ITENS"
+        qloja = "SED,019"
+    elif botao_id == "020":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_020.xlsx'
+        aba = "BD_020_SEGUNDA_ITENS"
+        qloja = "SED,020"
+    elif botao_id == "021":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_021.xlsx'
+        aba = "BD_021_SEGUNDA_ITENS"
+        qloja = "SED,021"
+    elif botao_id == "022":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_022.xlsx'
+        aba = "BD_022_SEGUNDA_ITENS"
+        qloja = "SED,022"
+    elif botao_id == "023":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_023.xlsx'
+        aba = "BD_023_SEGUNDA_ITENS"
+        qloja = "SED,023"
+    elif botao_id == "024":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_024.xlsx'
+        aba = "BD_024_SEGUNDA_ITENS"
+        qloja = "SED,024"
+    elif botao_id == "025":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_025.xlsx'
+        aba = "BD_025_SEGUNDA_ITENS"
+        qloja = "SED,025"
+    elif botao_id == "026":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_026.xlsx'
+        aba = "BD_026_SEGUNDA_ITENS"
+        qloja = "SED,026"
+    elif botao_id == "027":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_027.xlsx'
+        aba = "BD_027_SEGUNDA_ITENS"
+        qloja = "SED,027"
+    elif botao_id == "028":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_028.xlsx'
+        aba = "BD_028_SEGUNDA_ITENS"
+        qloja = "SED,028"
     elif botao_id == "001 App":
         caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
         aba = "BD_003_SEGUNDA_ITENS"
@@ -226,7 +269,73 @@ def atualizar_variaveis(botao_id):
         qloja = "SED,017"
         lojaexcel = "17"
         app()
-    
+    elif botao_id == "018 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,018"
+        lojaexcel = "18"
+        app()
+    elif botao_id == "019 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,019"
+        lojaexcel = "19"
+        app()
+    elif botao_id == "020 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,020"
+        lojaexcel = "20"
+        app()
+    elif botao_id == "021 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,021"
+        lojaexcel = "21"
+        app()
+    elif botao_id == "022 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,022"
+        lojaexcel = "22"
+        app()
+    elif botao_id == "023 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,023"
+        lojaexcel = "23"
+        app()
+    elif botao_id == "024 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,024"
+        lojaexcel = "24"
+        app()
+    elif botao_id == "025 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,025"
+        lojaexcel = "25"
+        app()
+    elif botao_id == "026 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,026"
+        lojaexcel = "26"
+        app()
+    elif botao_id == "027 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,027"
+        lojaexcel = "27"
+        app()
+    elif botao_id == "028 App":
+        caminho = r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\BD_SOLICITACOES_LOJAS\BD_SOLICITACOES_003_APP.xlsx'
+        aba = "BD_003_SEGUNDA_ITENS"
+        qloja = "SED,028"
+        lojaexcel = "28"
+        app()
+
     print(f"\nLoja selecionada {botao_id}")
     if botao_id == "001 App" or botao_id == "002 App" or botao_id == "003 App" or botao_id == "004 App" or botao_id == "005 App" or botao_id == "006 App" or botao_id == "007 App" or botao_id == "008 App" or botao_id == "009 App" or botao_id == "010 App" or botao_id == "011 App" or botao_id == "012 App" or botao_id == "013 App" or botao_id == "014 App" or botao_id == "015 App" or botao_id == "016 App" or botao_id == "017 App":
 
@@ -243,27 +352,45 @@ def atualizar_variaveis(botao_id):
         hoje_inserir()
         sai_amanha_inserir()
 
-def conectar_mysql():   
+def conectar_mysql():
     try:
         conn = pymysql.connect(
-    host=os.getenv('host'),
-    user=os.getenv('user'),
-    password=os.getenv('password'),
-    database=os.getenv('database')
-    )
-
+            host=os.getenv('host'),
+            user=os.getenv('user'),
+            password=os.getenv('password'),
+            database=os.getenv('database'),
+            port=int(os.getenv('port')),
+            connect_timeout=30
+            )
         return conn
+    
     except mysql.connector.Error as err:
         print(f"Erro ao se conectar ao MySQL: {err}")
         return None
 
 def att_plan():
-    excel = win32.gencache.EnsureDispatch('Excel.Application')
+    try:
+        # Seu código principal que utiliza win32com
+        excel = win32.gencache.EnsureDispatch('Excel.Application')
+
+    except AttributeError as e:
+        # Verifica se o erro é relacionado ao CLSID
+        if "CLSIDToClassMap" in str(e) or "CLSIDToPackageMap" in str(e):
+            print("Erro detectado no cache do win32com. Limpando e reconstruindo...")
+            limpar_cache_win32com()
+            # Tentativa de executar novamente
+            try:
+                excel = win32com.client.Dispatch("Excel.Application")
+                print("Excel aberto com sucesso após limpar o cache!")
+            except Exception as e2:
+                print(f"Erro ao tentar novamente: {e2}")
+        else:
+            print(f"Erro inesperado: {e}")
     
-    excel.Visible = True
+    excel.Visible = False
     
     try:
-        workbook = excel.Workbooks.Open(caminho)
+        workbook = excel.Workbooks.Open(caminho, UpdateLinks=1)
         excel.DisplayAlerts = False
         workbook.Save()
     
@@ -309,7 +436,7 @@ def horti_inserir():
 
         cursor.execute("SELECT LAST_INSERT_ID();")
         codigo_gerado = cursor.fetchone()[0]
-        print(f"Código gerado: {codigo_gerado}")
+        print(f"Preços de horti inseridos. {codigo_gerado}")
 
         df_horti = df_segunda[df_segunda['e_horti'] == 'Sim']
         df_horti = df_horti.drop_duplicates(subset=['CODIGOINT'])
@@ -349,7 +476,6 @@ def horti_inserir():
 """
             cursor.executemany(insert_itens, dados_para_inserir)
             connection.commit()
-            print("Dados inseridos em prc_promocaoitens com sucesso!")
         except mysql.connector.Error as err:
             print(f"Erro MySQL: {err}")
             connection.rollback()
@@ -377,7 +503,7 @@ def hoje_inserir():
     connection = conectar_mysql()
     if not connection:
         return
-
+    
     try:
         cursor = connection.cursor()
         insert_promocoes = """
@@ -398,7 +524,7 @@ def hoje_inserir():
 
         cursor.execute("SELECT LAST_INSERT_ID();")
         codigo_gerado = cursor.fetchone()[0]
-        print(f"Código gerado: {codigo_gerado}")
+        print(f"Preços que saem hoje inseridos. {codigo_gerado}")
 
         df_hoje = df_segunda[(df_segunda['finalidade'] == 'V') & (df_segunda['sai_hoje'] == 'Sim')]
         df_hoje = df_hoje.drop_duplicates(subset=['CODIGOINT'])
@@ -438,7 +564,6 @@ def hoje_inserir():
             """
             cursor.executemany(insert_itens, dados_para_inserir)
             connection.commit()
-            print("Dados inseridos em prc_promocaoitens com sucesso!")
         except mysql.connector.Error as err:
             print(f"Erro MySQL: {err}")
             connection.rollback()
@@ -449,12 +574,13 @@ def hoje_inserir():
         cursor.close()
         connection.close()
 
-def sai_amanha_inserir():
+def sai_amanha_inserir(aba):
     try:
-        df_segunda = pd.read_excel(
-            caminho,
-            sheet_name=aba
-        )
+        # Leitura da primeira planilha
+        df_segunda = pd.read_excel(caminho, sheet_name=aba)
+        
+        # Leitura da segunda planilha
+        df_terceira = pd.read_excel(r'\\192.168.1.243\samba\Metas\INTELIGENCIA\EDUARDO\APOIO APP SOLICITA PREÇO.xlsx', sheet_name="VENDA")
     except Exception as e:
         print(f"Erro ao ler o arquivo Excel: {e}")
         return
@@ -466,7 +592,7 @@ def sai_amanha_inserir():
     connection = conectar_mysql()
     if not connection:
         return
-
+    
     try:
         cursor = connection.cursor()
         insert_promocoes = """
@@ -487,7 +613,7 @@ def sai_amanha_inserir():
 
         cursor.execute("SELECT LAST_INSERT_ID();")
         codigo_gerado = cursor.fetchone()[0]
-        print(f"Código gerado: {codigo_gerado}")
+        print(f"Preços que saem amanhã inseridos. {codigo_gerado}")
 
         df_hoje = df_segunda[(df_segunda['finalidade'] == 'V') & (df_segunda['sai_hoje'] == 'Nao')]
         df_hoje = df_hoje.drop_duplicates(subset=['CODIGOINT'])
@@ -495,17 +621,54 @@ def sai_amanha_inserir():
         dados_para_inserir = []
 
         for _, row in df_hoje.iterrows():
-
-            linha = [codigo_gerado]
-
             codigo_int = str(int(row['CODIGOINT'])).zfill(7)
-            linha.append(codigo_int)
+            qtd_estimada = row['QtdEstimada']
+            validade = row['validade']
 
-            for col in df_hoje.columns[2:39]:
-                valor = row[col] if pd.notna(row[col]) else None
-                linha.append(valor)
+            # Verifica se o código existe na segunda planilha
+            if codigo_int in df_terceira['CODIGOINT'].values:
+                df_filtrado = df_terceira[df_terceira['CODIGOINT'] == codigo_int]
 
-            dados_para_inserir.append(linha)
+                # Verifica se a quantidade vendida no período de validade é suficiente
+                data_inicio = datetime.now() - timedelta(days=validade)
+                df_filtrado = df_filtrado[df_filtrado['DtMovimento'] >= data_inicio]
+
+                total_vendido = df_filtrado['Quantidade'].sum()
+
+                if total_vendido >= qtd_estimada:
+                    # Verifica a coluna DifVenda
+                    if df_filtrado['DifVenda'].iloc[-1] > 1:
+                        print(f"Produto {codigo_int} tem venda suficiente e DifVenda > 1. Ação necessária.")
+                        linha = [codigo_gerado]
+                        linha.append(codigo_int)
+
+                        for col in df_hoje.columns[2:39]:
+                            valor = row[col] if pd.notna(row[col]) else None
+                            linha.append(valor)
+
+                        dados_para_inserir.append(linha)
+                    else:
+                        print(f"Produto {codigo_int} tem venda suficiente, mas DifVenda <= 1. Nenhuma ação necessária.")
+                else:
+                    print(f"Produto {codigo_int} não tem venda suficiente. Ação necessária.")
+                    linha = [codigo_gerado]
+                    linha.append(codigo_int)
+
+                    for col in df_hoje.columns[2:39]:
+                        valor = row[col] if pd.notna(row[col]) else None
+                        linha.append(valor)
+
+                    dados_para_inserir.append(linha)
+            else:
+                print(f"Produto {codigo_int} não encontrado na segunda planilha. Ação necessária.")
+                linha = [codigo_gerado]
+                linha.append(codigo_int)
+
+                for col in df_hoje.columns[2:39]:
+                    valor = row[col] if pd.notna(row[col]) else None
+                    linha.append(valor)
+
+                dados_para_inserir.append(linha)
 
         try:
             insert_itens = """
@@ -527,7 +690,6 @@ def sai_amanha_inserir():
             """
             cursor.executemany(insert_itens, dados_para_inserir)
             connection.commit()
-            print("Dados inseridos em prc_promocaoitens com sucesso!")
         except mysql.connector.Error as err:
             print(f"Erro MySQL: {err}")
             connection.rollback()
@@ -537,6 +699,7 @@ def sai_amanha_inserir():
     finally:
         cursor.close()
         connection.close()
+
 
 def app():
     link_download = os.getenv('link')
@@ -553,7 +716,7 @@ def painel():
 
     root = tk.Tk()
     root.title("Painel DATA CURTA")
-    root.geometry("650x700")
+    root.geometry("1000x700")
     root.configure(bg="#0078A1")
 
     root.iconbitmap(icon_path)
@@ -561,8 +724,8 @@ def painel():
     frame = tk.Frame(root, bg="#0078A1")
     frame.pack(pady=20, padx=20, expand=True)
 
-    botao_ids = [f"{i:03}" for i in range(1, 18)]
-    botao_ids_app = [f"{i:03} App" for i in range(1, 18)]
+    botao_ids = [f"{i:03}" for i in range(1, 29)]
+    botao_ids_app = [f"{i:03} App" for i in range(1, 29)]
 
 
     def estilo_botao(botao, tamanho="normal"):
@@ -604,7 +767,7 @@ def painel():
         botao.grid(row=row_idx, column=col_idx, padx=10, pady=10)
 
         col_idx += 1
-        if col_idx == 2:
+        if col_idx == 3:
             col_idx = 0
             row_idx += 1
 
@@ -618,7 +781,7 @@ def painel():
         botao.grid(row=row_idx, column=col_idx, padx=10, pady=10)
 
         col_idx += 1
-        if col_idx == 2:
+        if col_idx == 3:
             col_idx = 0
             row_idx += 1
 
@@ -635,9 +798,8 @@ def processar_excel():
     try:
         caminho_entrada = Path.home() / "Downloads" / "APP Solicita Preço.xlsx"
         
-        print(f"Caminho do arquivo Excel: {caminho_entrada}")
         if not caminho_entrada.exists():
-            print(f"Arquivo não encontrado: {caminho_entrada}")
+            print(f"Erro, tentar novamente, apagar no sgcl as promoções geradas.")
             return
 
         df = pd.read_excel(caminho_entrada, sheet_name='bd_solicitação')
@@ -653,9 +815,6 @@ def processar_excel():
 
         df_filtrado.dropna(subset=['Data', 'Data_Hora'], inplace=True)
 
-        hoje = datetime.today().date()
-        ont = hoje - timedelta(days=1)
-
         dados_resumidos = []
         produtos_vistos = set()
 
@@ -665,11 +824,11 @@ def processar_excel():
             if produto in produtos_vistos:
                 continue
 
-            if row['Data'].date() == hoje:
+            if row['Data'].date() == hj:
                 dados_resumidos.append([produto, row['Quantidade'], row['Validade']])
                 produtos_vistos.add(produto)
 
-            elif row['Data'].date() == ont:
+            elif row['Data'].date() == ontem:
                 hora = row['Data_Hora'].time()
                 if hora >= datetime.strptime("12:00", "%H:%M").time():
                     dados_resumidos.append([produto, row['Quantidade'], row['Validade']])
@@ -687,9 +846,25 @@ def processar_excel():
 
         df_resumido.to_excel(caminho_saida, index=False)
 
-        print(f"Arquivo salvo com sucesso em: {caminho_saida}")
-
     except Exception as e:
         print(f"Erro ao processar o Excel: {e}")
+
+def limpar_cache_win32com():
+    try:
+        # Diretório do cache do `win32com`
+        gen_py_dir = os.path.join(os.environ['LOCALAPPDATA'], 'Temp', 'gen_py')
+        if os.path.exists(gen_py_dir):
+            print(f"Limpando o cache em: {gen_py_dir}")
+            shutil.rmtree(gen_py_dir)  # Remove o diretório e todo o conteúdo
+        else:
+            print("Nenhum cache encontrado para limpar.")
+        
+        # Reconstrói o cache
+        print("Reconstruindo cache do win32com...")
+        win32com.client.gencache.is_readonly = False
+        win32com.client.gencache.Rebuild()
+        print("Cache reconstruído com sucesso!")
+    except Exception as e:
+        print(f"Erro ao limpar ou reconstruir o cache: {e}")
 
 painel()
